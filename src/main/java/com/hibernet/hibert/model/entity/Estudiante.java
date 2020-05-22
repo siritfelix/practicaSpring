@@ -11,18 +11,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "estudiantes")
 public class Estudiante implements Serializable {
-    /**
-	 *
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	@Id

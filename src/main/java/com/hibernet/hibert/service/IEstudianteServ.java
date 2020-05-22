@@ -7,15 +7,15 @@ import com.hibernet.hibert.model.dto.EstudianteDTO;
 
 public interface IEstudianteServ {
 
-    public List<EstudianteDTO> listar();
+    public List<EstudianteDTO> listarEst();
 
     public EstudianteDTO BuscarPorId(Integer id);
 
-    public String Guardar(EstudianteDTO estudianteDTO,String operarion);
+    public String guardarEst(EstudianteDTO estudianteDTO,String operarion);
 
-    public Boolean Borrar(Integer id);
+    public Boolean borrarEst(Integer id);
 
-    public String cambiar(Integer id_estudiante,Integer id_inscripcion);
+    public String modificarEst(Integer id_estudiante,Integer id_inscripcion);
 
 
 }

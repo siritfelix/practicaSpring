@@ -15,28 +15,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class InscripcionServImpl implements IIncripcionServ {
+public class InscripcionServImpl implements IInscripcionServ {
+    
     @Autowired
-    private IInscripcionDao incripcionDao;
+    private IInscripcionDao IncripcionDao;
     @Autowired
-    private IMateriaServ materiaSerImpl;
+    private IMateriaServ MateriaSerImpl;
     @Autowired
-    private IEstudianteServ estudianteservimpl;
+    private IEstudianteServ EstudianteServ;
 
     @Override
     public Boolean crear(InscripcionDTO inscripcionDTO) {
-        if (estudianteservimpl.BuscarPorId(inscripcionDTO.getId_estudiante()) != null) {
+        if (EstudianteServ.BuscarPorId(inscripcionDTO.getId_estudiante()) != null) {
 
             List<Materia> materias = new ArrayList<>();
             List<Integer> materias_id = inscripcionDTO.getId_materias();
             materias_id.forEach(p -> {
-                materias.add(materiaSerImpl.buscar(p));
+                materias.add(MateriaSerImpl.buscar(p));
             });
             Estudiante estudiante = new Estudiante();
-            estudianteservimpl.BuscarPorId(inscripcionDTO.getId_estudiante());
-            BeanUtils.copyProperties(estudianteservimpl.BuscarPorId(inscripcionDTO.getId_estudiante()), estudiante);
+            EstudianteServ.BuscarPorId(inscripcionDTO.getId_estudiante());
+            BeanUtils.copyProperties(EstudianteServ.BuscarPorId(inscripcionDTO.getId_estudiante()), estudiante);
             Inscripcion inscripcion = new Inscripcion(null, new Date(), estudiante, materias);
-            incripcionDao.save(inscripcion);
+            IncripcionDao.save(inscripcion);
             return true;
         } else
             return false;
@@ -44,7 +45,7 @@ public class InscripcionServImpl implements IIncripcionServ {
 
     @Override
     public List<InscripcionDTO> listar() {
-        List<Inscripcion> inscripcionList = (List<Inscripcion>) incripcionDao.findAll();
+        List<Inscripcion> inscripcionList = (List<Inscripcion>) IncripcionDao.findAll();
         List<InscripcionDTO> inscripcionDTOList = new ArrayList<>();
         inscripcionList.forEach(p -> {
             InscripcionDTO inscripcionDTO = new InscripcionDTO();
@@ -60,7 +61,7 @@ public class InscripcionServImpl implements IIncripcionServ {
     @Override
     public InscripcionDTO buscar(Integer id) {
         try {
-            Inscripcion inscripcion = incripcionDao.findById(id).orElse(null);
+            Inscripcion inscripcion = IncripcionDao.findById(id).orElse(null);
             InscripcionDTO inscripcionDTO = new InscripcionDTO();
             BeanUtils.copyProperties(inscripcion, inscripcionDTO);
             inscripcionDTO.setId_estudiante(inscripcion.getEstudiante().getId()); 
@@ -74,8 +75,8 @@ public class InscripcionServImpl implements IIncripcionServ {
     @Override
     public String eliminar(Integer id) {
         try {
-            Inscripcion inscripcion = incripcionDao.findById(id).orElse(null);
-            incripcionDao.delete(inscripcion);
+            Inscripcion inscripcion = IncripcionDao.findById(id).orElse(null);
+            IncripcionDao.delete(inscripcion);
             return "eliminado";
         } catch (Exception e) {
             return "error: " + e.getMessage();
